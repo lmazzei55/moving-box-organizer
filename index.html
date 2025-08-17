@@ -1,0 +1,2024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moving Box Organizer</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background-color: #f9fafb;
+            color: #111827;
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark {
+            background-color: #0f172a;
+            color: #f1f5f9;
+        }
+
+        .min-h-screen {
+            min-height: 100vh;
+        }
+
+        .p-4 {
+            padding: 1rem;
+        }
+
+        .max-w-6xl {
+            max-width: 72rem;
+        }
+
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-8 {
+            margin-bottom: 2rem;
+        }
+
+        .mb-2 {
+            margin-bottom: 0.5rem;
+        }
+
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+
+        .mt-4 {
+            margin-top: 1rem;
+        }
+
+        .text-4xl {
+            font-size: 2.25rem;
+            line-height: 2.5rem;
+        }
+
+        .text-xl {
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+        }
+
+        .text-lg {
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+        }
+
+        .text-xs {
+            font-size: 0.75rem;
+            line-height: 1rem;
+        }
+
+        .font-bold {
+            font-weight: 700;
+        }
+
+        .font-semibold {
+            font-weight: 600;
+        }
+
+        .font-medium {
+            font-weight: 500;
+        }
+
+        .text-gray-900 {
+            color: #111827;
+        }
+
+        .text-gray-600 {
+            color: #4b5563;
+        }
+
+        .text-gray-700 {
+            color: #374151;
+        }
+
+        .text-gray-500 {
+            color: #6b7280;
+        }
+
+        .text-gray-400 {
+            color: #9ca3af;
+        }
+
+        .text-red-600 {
+            color: #dc2626;
+        }
+
+        .text-red-700 {
+            color: #b91c1c;
+        }
+
+        .bg-gray-50 {
+            background-color: #f9fafb;
+        }
+
+        body.dark .bg-gray-50 {
+            background-color: #334155;
+        }
+
+        .bg-white {
+            background-color: #ffffff;
+        }
+
+        body.dark .bg-white {
+            background-color: #1e293b;
+        }
+
+        .bg-blue-50 {
+            background-color: #eff6ff;
+        }
+
+        .bg-green-600 {
+            background-color: #16a34a;
+        }
+
+        .hover\\:bg-green-700:hover {
+            background-color: #15803d;
+        }
+
+        .hover\\:bg-gray-50:hover {
+            background-color: #f9fafb;
+        }
+
+        .hover\\:text-red-700:hover {
+            color: #b91c1c;
+        }
+
+        .border {
+            border-width: 1px;
+            border-color: #d1d5db;
+        }
+
+        .border-2 {
+            border-width: 2px;
+        }
+
+        .border-blue-200 {
+            border-color: #bfdbfe;
+        }
+
+        .rounded {
+            border-radius: 0.25rem;
+        }
+
+        .rounded-lg {
+            border-radius: 0.5rem;
+        }
+
+        .shadow {
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .shadow-sm {
+            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        }
+
+        .p-3 {
+            padding: 0.75rem;
+        }
+
+        .p-6 {
+            padding: 1.5rem;
+        }
+
+        .p-12 {
+            padding: 3rem;
+        }
+
+        .px-2 {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+
+        .px-4 {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .py-2 {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .py-12 {
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+
+        .pb-3 {
+            padding-bottom: 0.75rem;
+        }
+
+        .mr-2 {
+            margin-right: 0.5rem;
+        }
+
+        .gap-2 {
+            gap: 0.5rem;
+        }
+
+        .gap-4 {
+            gap: 1rem;
+        }
+
+        .gap-6 {
+            gap: 1.5rem;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-1 {
+            flex: 1 1 0%;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-center {
+            justify-content: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .space-y-2 > * + * {
+            margin-top: 0.5rem;
+        }
+
+        .space-y-3 > * + * {
+            margin-top: 0.75rem;
+        }
+
+        .space-y-4 > * + * {
+            margin-top: 1rem;
+        }
+
+        .grid {
+            display: grid;
+        }
+
+        .grid-cols-1 {
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+        }
+
+        .h-fit {
+            height: fit-content;
+        }
+
+        .h-6 {
+            height: 1.5rem;
+        }
+
+        .h-8 {
+            height: 2rem;
+        }
+
+        .w-4 {
+            width: 1rem;
+        }
+
+        .w-5 {
+            width: 1.25rem;
+        }
+
+        .w-6 {
+            width: 1.5rem;
+        }
+
+        .w-8 {
+            width: 2rem;
+        }
+
+        .w-12 {
+            width: 3rem;
+        }
+
+        .w-16 {
+            width: 4rem;
+        }
+
+        .w-fit {
+            width: fit-content;
+        }
+
+        .max-h-40 {
+            max-height: 10rem;
+        }
+
+        .overflow-y-auto {
+            overflow-y: auto;
+        }
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
+
+        .italic {
+            font-style: italic;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        body.dark .card {
+            background-color: #1e293b;
+            border-color: #334155;
+        }
+
+        .card-header {
+            padding: 1.5rem 1.5rem 0.75rem 1.5rem;
+        }
+
+        .card-content {
+            padding: 0 1.5rem 1.5rem 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            line-height: 1.75rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            padding: 0.5rem 1rem;
+            gap: 0.5rem;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background-color: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: #1d4ed8;
+        }
+
+        body.dark .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        body.dark .btn-primary:hover:not(:disabled) {
+            background-color: #2563eb;
+        }
+
+        .btn-secondary {
+            background-color: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background-color: #e5e7eb;
+        }
+
+        body.dark .btn-secondary {
+            background-color: #374151;
+            color: #f1f5f9;
+            border-color: #4b5563;
+        }
+
+        body.dark .btn-secondary:hover:not(:disabled) {
+            background-color: #4b5563;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-outline:hover:not(:disabled) {
+            background-color: #f9fafb;
+        }
+
+        body.dark .btn-outline {
+            background-color: transparent;
+            color: #f1f5f9;
+            border-color: #475569;
+        }
+
+        body.dark .btn-outline:hover:not(:disabled) {
+            background-color: #334155;
+        }
+
+        .btn-ghost {
+            background-color: transparent;
+            color: #374151;
+        }
+
+        .btn-ghost:hover:not(:disabled) {
+            background-color: #f3f4f6;
+        }
+
+        body.dark .btn-ghost {
+            background-color: transparent;
+            color: #f1f5f9;
+        }
+
+        body.dark .btn-ghost:hover:not(:disabled) {
+            background-color: #334155;
+        }
+
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .input {
+            display: flex;
+            width: 100%;
+            border-radius: 0.375rem;
+            border: 1px solid #d1d5db;
+            background-color: white;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
+        }
+
+        body.dark .input {
+            background-color: #334155;
+            border-color: #475569;
+            color: #f1f5f9;
+        }
+
+        body.dark .input:focus {
+            border-color: #3b82f6;
+            background-color: #1e293b;
+        }
+
+        body.dark select {
+            background-color: #334155;
+            border-color: #475569;
+            color: #f1f5f9;
+        }
+
+        body.dark select:focus {
+            border-color: #3b82f6;
+            background-color: #1e293b;
+        }
+
+        body.dark .text-gray-600 {
+            color: #cbd5e1;
+        }
+
+        body.dark .text-gray-500 {
+            color: #94a3b8;
+        }
+
+        body.dark .text-gray-400 {
+            color: #64748b;
+        }
+
+        body.dark .badge-secondary {
+            background-color: #334155;
+            color: #f1f5f9;
+        }
+
+        body.dark .badge-outline {
+            background-color: transparent;
+            color: #f1f5f9;
+            border-color: #475569;
+        }
+
+        body.dark .bg-blue-50 {
+            background-color: #1e3a8a;
+        }
+
+        body.dark .border-blue-200 {
+            border-color: #3b82f6;
+        }
+
+        body.dark .ring-blue-500 {
+            --tw-ring-color: #3b82f6;
+        }
+
+        body.dark .text-blue-600 {
+            color: #60a5fa;
+        }
+
+        body.dark .text-red-600 {
+            color: #f87171;
+        }
+
+        body.dark .text-red-700 {
+            color: #ef4444;
+        }
+
+        body.dark .hover\\:text-red-700:hover {
+            color: #ef4444;
+        }
+
+        .drag-over {
+            background-color: #dbeafe;
+            border-color: #3b82f6;
+        }
+
+        body.dark .drag-over {
+            background-color: #1e3a8a;
+            border-color: #60a5fa;
+        }
+
+        .cursor-grab {
+            cursor: grab;
+        }
+
+        .cursor-grabbing {
+            cursor: grabbing;
+        }
+
+        body.dark input[type="checkbox"] {
+            background-color: #374151;
+            border-color: #6b7280;
+            color: #3b82f6;
+        }
+
+        body.dark input[type="checkbox"]:checked {
+            background-color: #3b82f6;
+            border-color: #3b82f6;
+        }
+
+        body.dark input[type="checkbox"]:focus {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+        }
+
+        /* Modal improvements */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 1rem;
+        }
+
+        body.dark kbd {
+            background-color: #475569;
+            color: #f1f5f9;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 9999px;
+            padding: 0.125rem 0.625rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-secondary {
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+
+        .badge-outline {
+            background-color: transparent;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        .collapsible-content {
+            overflow: hidden;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .collapsible-content[data-state="closed"] {
+            display: none;
+        }
+
+        .collapsible-content[data-state="open"] {
+            display: block;
+        }
+
+        @media (min-width: 768px) {
+            .md\\:grid-cols-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .lg\\:grid-cols-3 {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        // Simple SVG icons as React components
+        const Plus = () => React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('line', { x1: 12, y1: 5, x2: 12, y2: 19 }), React.createElement('line', { x1: 5, y1: 12, x2: 19, y2: 12 }));
+        const Package = () => React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('line', { x1: 16.5, y1: 9.4, x2: 7.55, y2: 4.24 }), React.createElement('path', { d: 'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z' }), React.createElement('polyline', { points: '3.27,6.96 12,12.01 20.73,6.96' }), React.createElement('line', { x1: 12, y1: 22.08, x2: 12, y2: 12 }));
+        const Trash2 = () => React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('polyline', { points: '3,6 5,6 21,6' }), React.createElement('path', { d: 'M19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2' }), React.createElement('line', { x1: 10, y1: 11, x2: 10, y2: 17 }), React.createElement('line', { x1: 14, y1: 11, x2: 14, y2: 17 }));
+        const Edit2 = () => React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('path', { d: 'M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7' }), React.createElement('path', { d: 'M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z' }));
+        const X = () => React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('line', { x1: 18, y1: 6, x2: 6, y2: 18 }), React.createElement('line', { x1: 6, y1: 6, x2: 18, y2: 18 }));
+        const Download = () => React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('path', { d: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4' }), React.createElement('polyline', { points: '7,10 12,15 17,10' }), React.createElement('line', { x1: 12, y1: 15, x2: 12, y2: 3 }));
+        const Upload = () => React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('path', { d: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4' }), React.createElement('polyline', { points: '17,8 12,3 7,8' }), React.createElement('line', { x1: 12, y1: 3, x2: 12, y2: 15 }));
+        const Save = () => React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('path', { d: 'M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z' }), React.createElement('polyline', { points: '17,21 17,13 7,13 7,21' }), React.createElement('polyline', { points: '7,3 7,8 15,8' }));
+        const Minus = () => React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('line', { x1: 5, y1: 12, x2: 19, y2: 12 }));
+        const ChevronDown = () => React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('polyline', { points: '6,9 12,15 18,9' }));
+        const ChevronRight = () => React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('polyline', { points: '9,18 15,12 9,6' }));
+        const Folder = () => React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('path', { d: 'M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z' }));
+        const FolderOpen = () => React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('path', { d: 'M6 14l1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 1.515L22 14v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-4z' }), React.createElement('path', { d: 'M2 10h16a2 2 0 0 1 2 2v2H4a2 2 0 0 1-2-2v-2z' }));
+
+        function App() {
+            const [boxes, setBoxes] = useState([]);
+            const [newBoxName, setNewBoxName] = useState('');
+            const [newSubGroupName, setNewSubGroupName] = useState('');
+            const [newItemName, setNewItemName] = useState('');
+            const [newItemQuantity, setNewItemQuantity] = useState(1);
+            const [activeBoxId, setActiveBoxId] = useState(null);
+            const [activeSubGroupId, setActiveSubGroupId] = useState(null);
+            const [editingBox, setEditingBox] = useState(null);
+            const [editBoxName, setEditBoxName] = useState('');
+            const [editingSubGroup, setEditingSubGroup] = useState(null);
+            const [editSubGroupName, setEditSubGroupName] = useState('');
+            const [editingItem, setEditingItem] = useState(null);
+            const [editItemName, setEditItemName] = useState('');
+            const [editItemQuantity, setEditItemQuantity] = useState(1);
+            const [collapsedSubGroups, setCollapsedSubGroups] = useState({});
+            const [showingSubGroupInput, setShowingSubGroupInput] = useState(null);
+            const [searchTerm, setSearchTerm] = useState('');
+            const [showCompleted, setShowCompleted] = useState(true);
+            const [sortBy, setSortBy] = useState('name'); // 'name', 'date', 'items'
+            const [darkMode, setDarkMode] = useState(false);
+            const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
+            const [selectedItems, setSelectedItems] = useState(new Set());
+            const [isDragging, setIsDragging] = useState(false);
+            const [dragSource, setDragSource] = useState(null);
+            const [bulkMode, setBulkMode] = useState(false);
+
+            // Load data from localStorage on component mount
+            useEffect(() => {
+                const savedBoxes = localStorage.getItem('movingBoxes');
+                if (savedBoxes) {
+                    setBoxes(JSON.parse(savedBoxes));
+                }
+            }, []);
+
+            // Save data to localStorage whenever boxes change
+            useEffect(() => {
+                localStorage.setItem('movingBoxes', JSON.stringify(boxes));
+            }, [boxes]);
+
+            // Load dark mode preference
+            useEffect(() => {
+                const savedDarkMode = localStorage.getItem('darkMode');
+                if (savedDarkMode) {
+                    setDarkMode(JSON.parse(savedDarkMode));
+                }
+            }, []);
+
+            // Save dark mode preference
+            useEffect(() => {
+                localStorage.setItem('darkMode', JSON.stringify(darkMode));
+                if (darkMode) {
+                    document.body.classList.add('dark');
+                } else {
+                    document.body.classList.remove('dark');
+                }
+            }, [darkMode]);
+
+            // Keyboard shortcuts
+            useEffect(() => {
+                const handleKeyPress = (e) => {
+                    // Ctrl/Cmd + N: New box
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+                        e.preventDefault();
+                        document.getElementById('new-box-input')?.focus();
+                    }
+                    // Ctrl/Cmd + F: Focus search
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+                        e.preventDefault();
+                        document.getElementById('search-input')?.focus();
+                    }
+                    // Ctrl/Cmd + S: Export CSV
+                    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                        e.preventDefault();
+                        if (boxes.length > 0) {
+                            exportToCSV();
+                        }
+                    }
+                    // Escape: Clear search or close modal
+                    if (e.key === 'Escape') {
+                        if (showKeyboardShortcuts) {
+                            setShowKeyboardShortcuts(false);
+                        } else {
+                            setSearchTerm('');
+                        }
+                    }
+                    // ?: Show keyboard shortcuts
+                    if (e.key === '?') {
+                        setShowKeyboardShortcuts(!showKeyboardShortcuts);
+                    }
+                };
+
+                document.addEventListener('keydown', handleKeyPress);
+                return () => document.removeEventListener('keydown', handleKeyPress);
+            }, [boxes, showKeyboardShortcuts]);
+
+            // Click outside to close modal
+            useEffect(() => {
+                const handleClickOutside = (e) => {
+                    if (showKeyboardShortcuts && !e.target.closest('.modal-content')) {
+                        setShowKeyboardShortcuts(false);
+                    }
+                };
+
+                if (showKeyboardShortcuts) {
+                    document.addEventListener('mousedown', handleClickOutside);
+                    return () => document.removeEventListener('mousedown', handleClickOutside);
+                }
+            }, [showKeyboardShortcuts]);
+
+            const createBox = () => {
+                if (newBoxName.trim()) {
+                    const newBox = {
+                        id: Date.now(),
+                        name: newBoxName.trim(),
+                        subGroups: [],
+                        items: [],
+                        createdAt: new Date().toISOString()
+                    };
+                    setBoxes([...boxes, newBox]);
+                    setNewBoxName('');
+                }
+            };
+
+            const deleteBox = (boxId) => {
+                setBoxes(boxes.filter(box => box.id !== boxId));
+                if (activeBoxId === boxId) {
+                    setActiveBoxId(null);
+                }
+            };
+
+            const startEditingBox = (box) => {
+                setEditingBox(box.id);
+                setEditBoxName(box.name);
+            };
+
+            const saveBoxEdit = () => {
+                if (editBoxName.trim()) {
+                    setBoxes(boxes.map(box => 
+                        box.id === editingBox 
+                            ? { ...box, name: editBoxName.trim() }
+                            : box
+                    ));
+                }
+                setEditingBox(null);
+                setEditBoxName('');
+            };
+
+            const cancelBoxEdit = () => {
+                setEditingBox(null);
+                setEditBoxName('');
+            };
+
+            const createSubGroup = (boxId) => {
+                if (newSubGroupName.trim()) {
+                    const newSubGroup = {
+                        id: Date.now(),
+                        name: newSubGroupName.trim(),
+                        items: [],
+                        createdAt: new Date().toISOString()
+                    };
+                    setBoxes(boxes.map(box => 
+                        box.id === boxId 
+                            ? { ...box, subGroups: [...(box.subGroups || []), newSubGroup] }
+                            : box
+                    ));
+                    setNewSubGroupName('');
+                    setShowingSubGroupInput(null);
+                }
+            };
+
+            const deleteSubGroup = (boxId, subGroupId) => {
+                setBoxes(boxes.map(box => 
+                    box.id === boxId 
+                        ? { ...box, subGroups: (box.subGroups || []).filter(sg => sg.id !== subGroupId) }
+                        : box
+                ));
+            };
+
+            const startEditingSubGroup = (subGroup) => {
+                setEditingSubGroup(subGroup.id);
+                setEditSubGroupName(subGroup.name);
+            };
+
+            const saveSubGroupEdit = (boxId) => {
+                if (editSubGroupName.trim()) {
+                    setBoxes(boxes.map(box => 
+                        box.id === boxId 
+                            ? { 
+                                ...box, 
+                                subGroups: (box.subGroups || []).map(sg => 
+                                    sg.id === editingSubGroup 
+                                        ? { ...sg, name: editSubGroupName.trim() }
+                                        : sg
+                                )
+                            }
+                            : box
+                    ));
+                }
+                setEditingSubGroup(null);
+                setEditSubGroupName('');
+            };
+
+            const cancelSubGroupEdit = () => {
+                setEditingSubGroup(null);
+                setEditSubGroupName('');
+            };
+
+            const addItemToBox = (boxId, subGroupId = null) => {
+                if (newItemName.trim()) {
+                    const newItem = {
+                        id: Date.now(),
+                        name: newItemName.trim(),
+                        quantity: Math.max(1, newItemQuantity),
+                        addedAt: new Date().toISOString()
+                    };
+                    
+                    setBoxes(boxes.map(box => 
+                        box.id === boxId 
+                            ? subGroupId 
+                                ? { 
+                                    ...box, 
+                                    subGroups: (box.subGroups || []).map(sg => 
+                                        sg.id === subGroupId 
+                                            ? { ...sg, items: [...sg.items, newItem] }
+                                            : sg
+                                    )
+                                }
+                                : { ...box, items: [...(box.items || []), newItem] }
+                            : box
+                    ));
+                    setNewItemName('');
+                    setNewItemQuantity(1);
+                    setActiveSubGroupId(null);
+                }
+            };
+
+            const removeItemFromBox = (boxId, itemId, subGroupId = null) => {
+                setBoxes(boxes.map(box => 
+                    box.id === boxId 
+                        ? subGroupId
+                            ? {
+                                ...box,
+                                subGroups: (box.subGroups || []).map(sg =>
+                                    sg.id === subGroupId
+                                        ? { ...sg, items: sg.items.filter(item => item.id !== itemId) }
+                                        : sg
+                                )
+                            }
+                            : { ...box, items: (box.items || []).filter(item => item.id !== itemId) }
+                        : box
+                ));
+            };
+
+            const startEditingItem = (item) => {
+                setEditingItem(item.id);
+                setEditItemName(item.name);
+                setEditItemQuantity(item.quantity || 1);
+            };
+
+            const saveItemEdit = (boxId, subGroupId = null) => {
+                if (editItemName.trim()) {
+                    setBoxes(boxes.map(box => 
+                        box.id === boxId 
+                            ? subGroupId
+                                ? {
+                                    ...box,
+                                    subGroups: (box.subGroups || []).map(sg =>
+                                        sg.id === subGroupId
+                                            ? {
+                                                ...sg,
+                                                items: sg.items.map(item =>
+                                                    item.id === editingItem
+                                                        ? { ...item, name: editItemName.trim(), quantity: Math.max(1, editItemQuantity) }
+                                                        : item
+                                                )
+                                            }
+                                            : sg
+                                    )
+                                }
+                                : { 
+                                    ...box, 
+                                    items: (box.items || []).map(item => 
+                                        item.id === editingItem 
+                                            ? { ...item, name: editItemName.trim(), quantity: Math.max(1, editItemQuantity) }
+                                            : item
+                                    )
+                                }
+                            : box
+                    ));
+                }
+                setEditingItem(null);
+                setEditItemName('');
+                setEditItemQuantity(1);
+            };
+
+            const cancelItemEdit = () => {
+                setEditingItem(null);
+                setEditItemName('');
+                setEditItemQuantity(1);
+            };
+
+            const updateItemQuantity = (boxId, itemId, change, subGroupId = null) => {
+                setBoxes(boxes.map(box => 
+                    box.id === boxId 
+                        ? subGroupId
+                            ? {
+                                ...box,
+                                subGroups: (box.subGroups || []).map(sg =>
+                                    sg.id === subGroupId
+                                        ? {
+                                            ...sg,
+                                            items: sg.items.map(item =>
+                                                item.id === itemId
+                                                    ? { ...item, quantity: Math.max(1, (item.quantity || 1) + change) }
+                                                    : item
+                                            )
+                                        }
+                                        : sg
+                                )
+                            }
+                            : { 
+                                ...box, 
+                                items: (box.items || []).map(item => 
+                                    item.id === itemId 
+                                        ? { ...item, quantity: Math.max(1, (item.quantity || 1) + change) }
+                                        : item
+                                )
+                            }
+                        : box
+                ));
+            };
+
+            const getTotalItems = () => {
+                return boxes.reduce((total, box) => {
+                    const boxItems = (box.items || []).reduce((boxTotal, item) => boxTotal + (item.quantity || 1), 0);
+                    const subGroupItems = (box.subGroups || []).reduce((sgTotal, subGroup) => 
+                        sgTotal + subGroup.items.reduce((itemTotal, item) => itemTotal + (item.quantity || 1), 0), 0
+                    );
+                    return total + boxItems + subGroupItems;
+                }, 0);
+            };
+
+            const toggleSubGroup = (subGroupId) => {
+                setCollapsedSubGroups(prev => ({
+                    ...prev,
+                    [subGroupId]: !prev[subGroupId]
+                }));
+            };
+
+            const exportToCSV = () => {
+                const csvData = [];
+                csvData.push(['Box Name', 'Sub-Group', 'Item Name', 'Quantity', 'Date Added']);
+                
+                boxes.forEach(box => {
+                    if ((box.items || []).length > 0) {
+                        box.items.forEach(item => {
+                            csvData.push([
+                                box.name,
+                                '',
+                                item.name,
+                                item.quantity || 1,
+                                new Date(item.addedAt).toLocaleDateString()
+                            ]);
+                        });
+                    }
+                    
+                    if ((box.subGroups || []).length > 0) {
+                        box.subGroups.forEach(subGroup => {
+                            if (subGroup.items.length === 0) {
+                                csvData.push([box.name, subGroup.name, '(empty)', '', '']);
+                            } else {
+                                subGroup.items.forEach(item => {
+                                    csvData.push([
+                                        box.name,
+                                        subGroup.name,
+                                        item.name,
+                                        item.quantity || 1,
+                                        new Date(item.addedAt).toLocaleDateString()
+                                    ]);
+                                });
+                            }
+                        });
+                    }
+                    
+                    if ((box.items || []).length === 0 && (box.subGroups || []).length === 0) {
+                        csvData.push([box.name, '', '(empty)', '', '']);
+                    }
+                });
+
+                const csvContent = csvData.map(row => 
+                    row.map(field => `"${field}"`).join(',')
+                ).join('\n');
+
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', `moving-boxes-${new Date().toISOString().split('T')[0]}.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            };
+
+            const importFromCSV = (file) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const csvContent = e.target.result;
+                        const lines = csvContent.split('\n');
+                        const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+                        
+                        // Validate headers
+                        const expectedHeaders = ['Box Name', 'Sub-Group', 'Item Name', 'Quantity', 'Date Added'];
+                        if (!expectedHeaders.every(h => headers.includes(h))) {
+                            alert('Invalid CSV format. Please use a CSV exported from this app.');
+                            return;
+                        }
+                        
+                        const newBoxes = [];
+                        const boxMap = new Map();
+                        
+                        // Skip header row
+                        for (let i = 1; i < lines.length; i++) {
+                            const line = lines[i].trim();
+                            if (!line) continue;
+                            
+                            // Parse CSV line (handle quoted fields)
+                            const values = [];
+                            let current = '';
+                            let inQuotes = false;
+                            
+                            for (let j = 0; j < line.length; j++) {
+                                const char = line[j];
+                                if (char === '"') {
+                                    inQuotes = !inQuotes;
+                                } else if (char === ',' && !inQuotes) {
+                                    values.push(current.trim());
+                                    current = '';
+                                } else {
+                                    current += char;
+                                }
+                            }
+                            values.push(current.trim());
+                            
+                            const [boxName, subGroupName, itemName, quantity, dateAdded] = values.map(v => v.replace(/"/g, ''));
+                            
+                            if (!boxName || boxName === '(empty)') continue;
+                            
+                            // Find or create box
+                            let box = boxMap.get(boxName);
+                            if (!box) {
+                                box = {
+                                    id: Date.now() + Math.random(),
+                                    name: boxName,
+                                    subGroups: [],
+                                    items: [],
+                                    createdAt: new Date().toISOString()
+                                };
+                                boxMap.set(boxName, box);
+                                newBoxes.push(box);
+                            }
+                            
+                            // Handle items
+                            if (itemName && itemName !== '(empty)') {
+                                const item = {
+                                    id: Date.now() + Math.random(),
+                                    name: itemName,
+                                    quantity: parseInt(quantity) || 1,
+                                    addedAt: dateAdded ? new Date(dateAdded).toISOString() : new Date().toISOString()
+                                };
+                                
+                                if (subGroupName && subGroupName.trim()) {
+                                    // Add to sub-group
+                                    let subGroup = box.subGroups.find(sg => sg.name === subGroupName);
+                                    if (!subGroup) {
+                                        subGroup = {
+                                            id: Date.now() + Math.random(),
+                                            name: subGroupName,
+                                            items: [],
+                                            createdAt: new Date().toISOString()
+                                        };
+                                        box.subGroups.push(subGroup);
+                                    }
+                                    subGroup.items.push(item);
+                                } else {
+                                    // Add directly to box
+                                    box.items.push(item);
+                                }
+                            }
+                        }
+                        
+                        if (newBoxes.length > 0) {
+                            setBoxes(prevBoxes => [...prevBoxes, ...newBoxes]);
+                            alert(`Successfully imported ${newBoxes.length} boxes with their items!`);
+                        } else {
+                            alert('No valid data found in the CSV file.');
+                        }
+                    } catch (error) {
+                        console.error('Import error:', error);
+                        alert('Error importing CSV file. Please check the file format.');
+                    }
+                };
+                reader.readAsText(file);
+            };
+
+            const handleFileUpload = (event) => {
+                const file = event.target.files[0];
+                if (file && file.type === 'text/csv') {
+                    importFromCSV(file);
+                } else {
+                    alert('Please select a valid CSV file.');
+                }
+                event.target.value = ''; // Reset file input
+            };
+
+            const filteredAndSortedBoxes = () => {
+                let filtered = boxes;
+                
+                // Filter by search term
+                if (searchTerm.trim()) {
+                    const term = searchTerm.toLowerCase();
+                    filtered = boxes.map(box => {
+                        // Check if box name matches
+                        const boxMatches = box.name.toLowerCase().includes(term);
+                        
+                        // Filter sub-groups
+                        const filteredSubGroups = (box.subGroups || []).map(subGroup => {
+                            const subGroupMatches = subGroup.name.toLowerCase().includes(term);
+                            const filteredItems = subGroup.items.filter(item => 
+                                item.name.toLowerCase().includes(term)
+                            );
+                            return {
+                                ...subGroup,
+                                items: filteredItems,
+                                hasMatches: subGroupMatches || filteredItems.length > 0
+                            };
+                        }).filter(sg => sg.hasMatches);
+                        
+                        // Filter direct items
+                        const filteredItems = (box.items || []).filter(item => 
+                            item.name.toLowerCase().includes(term)
+                        );
+                        
+                        // Only include box if it has matches
+                        const hasMatches = boxMatches || filteredSubGroups.length > 0 || filteredItems.length > 0;
+                        
+                        return hasMatches ? {
+                            ...box,
+                            subGroups: filteredSubGroups,
+                            items: filteredItems,
+                            hasMatches
+                        } : null;
+                    }).filter(box => box !== null);
+                }
+                
+                // Sort boxes
+                filtered.sort((a, b) => {
+                    switch (sortBy) {
+                        case 'name':
+                            return a.name.localeCompare(b.name);
+                        case 'date':
+                            return new Date(b.createdAt) - new Date(a.createdAt);
+                        case 'items':
+                            const aItems = (a.items || []).reduce((total, item) => total + (item.quantity || 1), 0) +
+                                (a.subGroups || []).reduce((total, sg) => total + sg.items.reduce((sgTotal, item) => sgTotal + (item.quantity || 1), 0), 0);
+                            const bItems = (b.items || []).reduce((total, item) => total + (item.quantity || 1), 0) +
+                                (b.subGroups || []).reduce((total, sg) => total + sg.items.reduce((sgTotal, item) => sgTotal + (item.quantity || 1), 0), 0);
+                            return bItems - aItems;
+                        default:
+                            return 0;
+                    }
+                });
+                
+                return filtered;
+            };
+
+            const clearAllData = () => {
+                if (confirm('Are you sure you want to delete all boxes and items? This action cannot be undone.')) {
+                    setBoxes([]);
+                    localStorage.removeItem('movingBoxes');
+                }
+            };
+
+            // Bulk operations
+            const toggleItemSelection = (itemId) => {
+                const newSelected = new Set(selectedItems);
+                if (newSelected.has(itemId)) {
+                    newSelected.delete(itemId);
+                } else {
+                    newSelected.add(itemId);
+                }
+                setSelectedItems(newSelected);
+            };
+
+            const selectAllItems = () => {
+                const allItemIds = new Set();
+                boxes.forEach(box => {
+                    box.items.forEach(item => allItemIds.add(item.id));
+                    box.subGroups.forEach(sg => {
+                        sg.items.forEach(item => allItemIds.add(item.id));
+                    });
+                });
+                setSelectedItems(allItemIds);
+            };
+
+            const clearSelection = () => {
+                setSelectedItems(new Set());
+                setBulkMode(false);
+            };
+
+            const deleteSelectedItems = () => {
+                if (selectedItems.size === 0) return;
+                
+                if (confirm(`Are you sure you want to delete ${selectedItems.size} selected items?`)) {
+                    setBoxes(prevBoxes => prevBoxes.map(box => ({
+                        ...box,
+                        items: box.items.filter(item => !selectedItems.has(item.id)),
+                        subGroups: box.subGroups.map(sg => ({
+                            ...sg,
+                            items: sg.items.filter(item => !selectedItems.has(item.id))
+                        }))
+                    })));
+                    setSelectedItems(new Set());
+                    setBulkMode(false);
+                }
+            };
+
+            // Drag and drop
+            const handleDragStart = (e, item, sourceBoxId, sourceSubGroupId = null) => {
+                setIsDragging(true);
+                setDragSource({ item, sourceBoxId, sourceSubGroupId });
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', JSON.stringify({ item, sourceBoxId, sourceSubGroupId }));
+            };
+
+            const handleDragOver = (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+            };
+
+            const handleDrop = (e, targetBoxId, targetSubGroupId = null) => {
+                e.preventDefault();
+                if (!dragSource) return;
+
+                const { item, sourceBoxId, sourceSubGroupId } = dragSource;
+                
+                // Don't drop on itself
+                if (sourceBoxId === targetBoxId && sourceSubGroupId === targetSubGroupId) {
+                    setIsDragging(false);
+                    setDragSource(null);
+                    return;
+                }
+
+                // Remove from source
+                setBoxes(prevBoxes => prevBoxes.map(box => {
+                    if (box.id === sourceBoxId) {
+                        if (sourceSubGroupId) {
+                            // Remove from sub-group
+                            return {
+                                ...box,
+                                subGroups: box.subGroups.map(sg => 
+                                    sg.id === sourceSubGroupId 
+                                        ? { ...sg, items: sg.items.filter(i => i.id !== item.id) }
+                                        : sg
+                                )
+                            };
+                        } else {
+                            // Remove from box
+                            return {
+                                ...box,
+                                items: box.items.filter(i => i.id !== item.id)
+                            };
+                        }
+                    }
+                    return box;
+                }));
+
+                // Add to target
+                setBoxes(prevBoxes => prevBoxes.map(box => {
+                    if (box.id === targetBoxId) {
+                        if (targetSubGroupId) {
+                            // Add to sub-group
+                            return {
+                                ...box,
+                                subGroups: box.subGroups.map(sg => 
+                                    sg.id === targetSubGroupId 
+                                        ? { ...sg, items: [...sg.items, item] }
+                                        : sg
+                                )
+                            };
+                        } else {
+                            // Add to box
+                            return {
+                                ...box,
+                                items: [...box.items, item]
+                            };
+                        }
+                    }
+                    return box;
+                }));
+
+                setIsDragging(false);
+                setDragSource(null);
+            };
+
+            const handleDragEnd = () => {
+                setIsDragging(false);
+                setDragSource(null);
+            };
+
+            const renderItem = (item, boxId, subGroupId = null) => (
+                <div 
+                    key={item.id} 
+                    className={`bg-gray-50 p-3 rounded border transition-all duration-200 ${
+                        selectedItems.has(item.id) ? 'ring-2 ring-blue-500 bg-blue-50' : ''
+                    } ${isDragging ? 'opacity-50' : ''} ${!bulkMode ? 'cursor-grab' : ''}`}
+                    draggable={!bulkMode}
+                    onDragStart={(e) => handleDragStart(e, item, boxId, subGroupId)}
+                    onDragEnd={handleDragEnd}
+                    onDrop={(e) => handleDrop(e, boxId, subGroupId)}
+                    onDragOver={handleDragOver}
+                >
+                    {editingItem === item.id ? (
+                        <div className="space-y-2">
+                            <input
+                                className="input text-sm"
+                                value={editItemName}
+                                onChange={(e) => setEditItemName(e.target.value)}
+                                onKeyPress={(e) => e.key === 'Enter' && saveItemEdit(boxId, subGroupId)}
+                                autoFocus
+                            />
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                    <span className="text-xs text-gray-600">Qty:</span>
+                                    <div className="flex items-center gap-1">
+                                        <button
+                                            className="btn btn-outline btn-sm h-6 w-6 p-0"
+                                            onClick={() => setEditItemQuantity(Math.max(1, editItemQuantity - 1))}
+                                        >
+                                            <Minus className="w-2 h-2" />
+                                        </button>
+                                        <input
+                                            className="input w-12 h-6 text-center text-xs"
+                                            type="number"
+                                            min="1"
+                                            value={editItemQuantity}
+                                            onChange={(e) => setEditItemQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                                        />
+                                        <button
+                                            className="btn btn-outline btn-sm h-6 w-6 p-0"
+                                            onClick={() => setEditItemQuantity(editItemQuantity + 1)}
+                                        >
+                                            <Plus className="w-2 h-2" />
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="flex gap-1">
+                                    <button
+                                        className="btn btn-primary btn-sm h-6 px-2"
+                                        onClick={() => saveItemEdit(boxId, subGroupId)}
+                                    >
+                                        <Save className="w-3 h-3" />
+                                    </button>
+                                    <button
+                                        className="btn btn-outline btn-sm h-6 px-2"
+                                        onClick={cancelItemEdit}
+                                    >
+                                        <X className="w-3 h-3" />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="flex items-center justify-between">
+                            <div className="flex-1">
+                                <div className="flex items-center gap-2">
+                                    {bulkMode && (
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedItems.has(item.id)}
+                                            onChange={() => toggleItemSelection(item.id)}
+                                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:checked:bg-blue-600 dark:checked:border-blue-600"
+                                        />
+                                    )}
+                                    <span className="text-sm font-medium">{item.name}</span>
+                                    {(item.quantity || 1) > 1 && (
+                                        <span className="badge badge-secondary text-xs">
+                                            x{item.quantity}
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-1">
+                                <div className="flex items-center gap-1">
+                                    <button
+                                        className="btn btn-ghost btn-sm h-6 w-6 p-0"
+                                        onClick={() => updateItemQuantity(boxId, item.id, -1, subGroupId)}
+                                        disabled={(item.quantity || 1) <= 1}
+                                    >
+                                        <Minus className="w-3 h-3" />
+                                    </button>
+                                    <button
+                                        className="btn btn-ghost btn-sm h-6 w-6 p-0"
+                                        onClick={() => updateItemQuantity(boxId, item.id, 1, subGroupId)}
+                                    >
+                                        <Plus className="w-3 h-3" />
+                                    </button>
+                                </div>
+                                <button
+                                    className="btn btn-ghost btn-sm h-6 w-6 p-0"
+                                    onClick={() => startEditingItem(item)}
+                                >
+                                    <Edit2 className="w-3 h-3" />
+                                </button>
+                                <button
+                                    className="btn btn-ghost btn-sm text-red-600 hover:text-red-700 h-6 w-6 p-0"
+                                    onClick={() => removeItemFromBox(boxId, item.id, subGroupId)}
+                                >
+                                    <X className="w-3 h-3" />
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+
+            return (
+                <div className="min-h-screen bg-gray-50 p-4">
+                    <div className="max-w-6xl mx-auto">
+                        {/* Header */}
+                        <div className="text-center mb-8">
+                            <h1 className="text-4xl font-bold text-gray-900 mb-2">Moving Box Organizer</h1>
+                            <p className="text-gray-600">Keep track of your belongings during your move with sub-groups</p>
+                            <div className="flex justify-center gap-4 mt-4">
+                                <span className="badge badge-secondary text-lg px-4 py-2">
+                                    <Package className="w-4 h-4 mr-2" />
+                                    {boxes.length} Boxes
+                                </span>
+                                <span className="badge badge-secondary text-lg px-4 py-2">
+                                    {getTotalItems()} Items
+                                </span>
+                                <div className="flex gap-2">
+                                    <input
+                                        type="file"
+                                        accept=".csv"
+                                        onChange={handleFileUpload}
+                                        style={{ display: 'none' }}
+                                        id="csv-upload"
+                                    />
+                                    <label htmlFor="csv-upload" className="btn btn-outline text-lg px-4 py-2 cursor-pointer">
+                                        <Upload className="w-4 h-4 mr-2" />
+                                        Import CSV
+                                    </label>
+                                    {boxes.length > 0 && (
+                                        <button onClick={exportToCSV} className="btn btn-outline text-lg px-4 py-2">
+                                            <Download className="w-4 h-4 mr-2" />
+                                            Export CSV
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="flex justify-center gap-2 mt-4">
+                                <button 
+                                    onClick={() => setDarkMode(!darkMode)}
+                                    className="btn btn-outline btn-sm"
+                                    title="Toggle dark mode"
+                                >
+                                    {darkMode ? '☀️' : '🌙'}
+                                </button>
+                                <button 
+                                    onClick={() => setShowKeyboardShortcuts(!showKeyboardShortcuts)}
+                                    className="btn btn-outline btn-sm"
+                                    title="Keyboard shortcuts (press ?)"
+                                >
+                                    ⌨️
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Create New Box */}
+                        <div className="card mb-8">
+                            <div className="card-header">
+                                <h2 className="card-title flex items-center gap-2">
+                                    <Plus className="w-5 h-5" />
+                                    Create New Box
+                                </h2>
+                            </div>
+                            <div className="card-content">
+                                <div className="flex gap-2">
+                                    <input
+                                        id="new-box-input"
+                                        className="input flex-1"
+                                        placeholder="Enter box name (e.g., Kitchen Items, Bedroom Clothes) (Ctrl+N)"
+                                        value={newBoxName}
+                                        onChange={(e) => setNewBoxName(e.target.value)}
+                                        onKeyPress={(e) => e.key === 'Enter' && createBox()}
+                                    />
+                                    <button 
+                                        className="btn btn-primary" 
+                                        onClick={createBox} 
+                                        disabled={!newBoxName.trim()}
+                                    >
+                                        <Plus className="w-4 h-4 mr-2" />
+                                        Create Box
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Search and Filters */}
+                        {boxes.length > 0 && (
+                            <div className="card mb-6">
+                                <div className="card-header">
+                                    <h2 className="card-title">Search & Filters</h2>
+                                </div>
+                                <div className="card-content">
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div>
+                                            <label className="text-sm font-medium text-gray-700 mb-2 block">Search</label>
+                                            <input
+                                                id="search-input"
+                                                className="input w-full"
+                                                placeholder="Search boxes, groups, or items... (Ctrl+F)"
+                                                value={searchTerm}
+                                                onChange={(e) => setSearchTerm(e.target.value)}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="text-sm font-medium text-gray-700 mb-2 block">Sort By</label>
+                                            <select 
+                                                className="input w-full"
+                                                value={sortBy}
+                                                onChange={(e) => setSortBy(e.target.value)}
+                                            >
+                                                <option value="name">Name (A-Z)</option>
+                                                <option value="date">Date Created (Newest)</option>
+                                                <option value="items">Most Items</option>
+                                            </select>
+                                        </div>
+                                        <div className="flex items-end gap-2">
+                                            <button 
+                                                onClick={() => setBulkMode(!bulkMode)}
+                                                className={`btn ${bulkMode ? 'btn-primary' : 'btn-outline'} flex-1`}
+                                            >
+                                                {bulkMode ? 'Exit Bulk Mode' : 'Bulk Mode'}
+                                            </button>
+                                            <button 
+                                                onClick={clearAllData}
+                                                className="btn btn-outline text-red-600 hover:text-red-700 flex-1"
+                                            >
+                                                Clear All
+                                            </button>
+                                        </div>
+                                    </div>
+                                    {bulkMode && (
+                                        <div className="mt-4 p-3 bg-blue-50 rounded border border-blue-200">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-sm font-medium">
+                                                        {selectedItems.size} items selected
+                                                    </span>
+                                                </div>
+                                                <div className="flex gap-2">
+                                                    <button 
+                                                        onClick={selectAllItems}
+                                                        className="btn btn-outline btn-sm"
+                                                    >
+                                                        Select All
+                                                    </button>
+                                                    <button 
+                                                        onClick={clearSelection}
+                                                        className="btn btn-outline btn-sm"
+                                                    >
+                                                        Clear
+                                                    </button>
+                                                    <button 
+                                                        onClick={deleteSelectedItems}
+                                                        disabled={selectedItems.size === 0}
+                                                        className="btn btn-outline btn-sm text-red-600 hover:text-red-700"
+                                                    >
+                                                        Delete Selected
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Boxes Grid */}
+                        {boxes.length === 0 ? (
+                            <div className="card text-center py-12">
+                                <div className="card-content">
+                                    <Package className="w-16 h-16 mx-auto text-gray-400 mb-4" />
+                                    <h3 className="text-xl font-semibold text-gray-600 mb-2">No boxes yet</h3>
+                                    <p className="text-gray-500">Create your first box to start organizing your belongings</p>
+                                </div>
+                            </div>
+                        ) : filteredAndSortedBoxes().length === 0 && searchTerm.trim() ? (
+                            <div className="card text-center py-12">
+                                <div className="card-content">
+                                    <Package className="w-16 h-16 mx-auto text-gray-400 mb-4" />
+                                    <h3 className="text-xl font-semibold text-gray-600 mb-2">No results found</h3>
+                                    <p className="text-gray-500">Try adjusting your search terms</p>
+                                    <button 
+                                        onClick={() => setSearchTerm('')}
+                                        className="btn btn-outline mt-4"
+                                    >
+                                        Clear Search
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {filteredAndSortedBoxes().map((box) => {
+                                    const totalBoxItems = (box.items || []).reduce((total, item) => total + (item.quantity || 1), 0) +
+                                        (box.subGroups || []).reduce((total, sg) => total + sg.items.reduce((sgTotal, item) => sgTotal + (item.quantity || 1), 0), 0);
+                                    
+                                    return (
+                                        <div key={box.id} className="card h-fit">
+                                            <div className="card-header pb-3">
+                                                <div className="flex items-center justify-between">
+                                                    {editingBox === box.id ? (
+                                                        <div className="flex items-center gap-2 flex-1">
+                                                            <input
+                                                                className="input flex-1"
+                                                                value={editBoxName}
+                                                                onChange={(e) => setEditBoxName(e.target.value)}
+                                                                onKeyPress={(e) => e.key === 'Enter' && saveBoxEdit()}
+                                                                autoFocus
+                                                            />
+                                                            <button className="btn btn-primary btn-sm" onClick={saveBoxEdit}>
+                                                                <Save className="w-4 h-4" />
+                                                            </button>
+                                                            <button className="btn btn-outline btn-sm" onClick={cancelBoxEdit}>
+                                                                <X className="w-4 h-4" />
+                                                            </button>
+                                                        </div>
+                                                    ) : (
+                                                        <>
+                                                            <h3 className="card-title text-lg flex items-center gap-2">
+                                                                <Package className="w-5 h-5" />
+                                                                {box.name}
+                                                            </h3>
+                                                            <div className="flex gap-1">
+                                                                <button
+                                                                    className="btn btn-ghost btn-sm"
+                                                                    onClick={() => startEditingBox(box)}
+                                                                >
+                                                                    <Edit2 className="w-4 h-4" />
+                                                                </button>
+                                                                <button
+                                                                    className="btn btn-ghost btn-sm text-red-600 hover:text-red-700"
+                                                                    onClick={() => deleteBox(box.id)}
+                                                                >
+                                                                    <Trash2 className="w-4 h-4" />
+                                                                </button>
+                                                            </div>
+                                                        </>
+                                                    )}
+                                                </div>
+                                                <div className="flex gap-2">
+                                                    <span className="badge badge-outline w-fit">
+                                                        {totalBoxItems} items
+                                                    </span>
+                                                    {(box.subGroups || []).length > 0 && (
+                                                        <span className="badge badge-secondary w-fit">
+                                                            {box.subGroups.length} groups
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            <div 
+                                                className="card-content space-y-4"
+                                                onDrop={(e) => handleDrop(e, box.id)}
+                                                onDragOver={handleDragOver}
+                                            >
+                                                {/* Add Sub-Group */}
+                                                <div className="space-y-2">
+                                                    <div className="flex gap-2">
+                                                        <button
+                                                            className="btn btn-outline btn-sm flex-1"
+                                                            onClick={() => setShowingSubGroupInput(showingSubGroupInput === box.id ? null : box.id)}
+                                                        >
+                                                            <Folder className="w-4 h-4 mr-2" />
+                                                            Add Sub-Group
+                                                        </button>
+                                                    </div>
+                                                    {showingSubGroupInput === box.id && (
+                                                        <div className="flex gap-2">
+                                                            <input
+                                                                className="input flex-1"
+                                                                placeholder="Sub-group name (e.g., Clothes, Electronics)"
+                                                                value={newSubGroupName}
+                                                                onChange={(e) => setNewSubGroupName(e.target.value)}
+                                                                onKeyPress={(e) => e.key === 'Enter' && createSubGroup(box.id)}
+                                                                autoFocus
+                                                            />
+                                                            <button
+                                                                className="btn btn-primary btn-sm"
+                                                                onClick={() => createSubGroup(box.id)}
+                                                                disabled={!newSubGroupName.trim()}
+                                                            >
+                                                                <Plus className="w-4 h-4" />
+                                                            </button>
+                                                        </div>
+                                                    )}
+                                                </div>
+
+                                                {/* Sub-Groups */}
+                                                {(box.subGroups || []).map((subGroup) => (
+                                                    <div key={subGroup.id}>
+                                                        <div 
+                                                            className="border rounded-lg p-3 bg-blue-50"
+                                                            onDrop={(e) => handleDrop(e, box.id, subGroup.id)}
+                                                            onDragOver={handleDragOver}
+                                                        >
+                                                            <div 
+                                                                className="flex items-center justify-between cursor-pointer"
+                                                                onClick={() => toggleSubGroup(subGroup.id)}
+                                                            >
+                                                                {editingSubGroup === subGroup.id ? (
+                                                                    <div className="flex items-center gap-2 flex-1" onClick={(e) => e.stopPropagation()}>
+                                                                        <input
+                                                                            className="input flex-1"
+                                                                            value={editSubGroupName}
+                                                                            onChange={(e) => setEditSubGroupName(e.target.value)}
+                                                                            onKeyPress={(e) => e.key === 'Enter' && saveSubGroupEdit(box.id)}
+                                                                            autoFocus
+                                                                        />
+                                                                        <button className="btn btn-primary btn-sm" onClick={() => saveSubGroupEdit(box.id)}>
+                                                                            <Save className="w-3 h-3" />
+                                                                        </button>
+                                                                        <button className="btn btn-outline btn-sm" onClick={cancelSubGroupEdit}>
+                                                                            <X className="w-3 h-3" />
+                                                                        </button>
+                                                                    </div>
+                                                                ) : (
+                                                                    <>
+                                                                        <div className="flex items-center gap-2">
+                                                                            {collapsedSubGroups[subGroup.id] ? (
+                                                                                <ChevronRight className="w-4 h-4" />
+                                                                            ) : (
+                                                                                <ChevronDown className="w-4 h-4" />
+                                                                            )}
+                                                                            {collapsedSubGroups[subGroup.id] ? (
+                                                                                <Folder className="w-4 h-4" />
+                                                                            ) : (
+                                                                                <FolderOpen className="w-4 h-4" />
+                                                                            )}
+                                                                            <span className="font-medium">{subGroup.name}</span>
+                                                                            <span className="badge badge-outline text-xs">
+                                                                                {subGroup.items.reduce((total, item) => total + (item.quantity || 1), 0)} items
+                                                                            </span>
+                                                                        </div>
+                                                                        <div className="flex gap-1" onClick={(e) => e.stopPropagation()}>
+                                                                            <button
+                                                                                className="btn btn-ghost btn-sm h-6 w-6 p-0"
+                                                                                onClick={() => startEditingSubGroup(subGroup)}
+                                                                            >
+                                                                                <Edit2 className="w-3 h-3" />
+                                                                            </button>
+                                                                            <button
+                                                                                className="btn btn-ghost btn-sm text-red-600 hover:text-red-700 h-6 w-6 p-0"
+                                                                                onClick={() => deleteSubGroup(box.id, subGroup.id)}
+                                                                            >
+                                                                                <Trash2 className="w-3 h-3" />
+                                                                            </button>
+                                                                        </div>
+                                                                    </>
+                                                                )}
+                                                            </div>
+                                                            <div 
+                                                                className="collapsible-content space-y-3 mt-3"
+                                                                data-state={collapsedSubGroups[subGroup.id] ? "closed" : "open"}
+                                                            >
+                                                                {/* Add Item to Sub-Group */}
+                                                                <div className="space-y-2">
+                                                                    <div className="flex gap-2">
+                                                                        <input
+                                                                            className="input flex-1 text-sm"
+                                                                            placeholder="Add item to this group..."
+                                                                            value={activeBoxId === box.id && activeSubGroupId === subGroup.id ? newItemName : ''}
+                                                                            onChange={(e) => {
+                                                                                setNewItemName(e.target.value);
+                                                                                setActiveBoxId(box.id);
+                                                                                setActiveSubGroupId(subGroup.id);
+                                                                            }}
+                                                                            onKeyPress={(e) => e.key === 'Enter' && addItemToBox(box.id, subGroup.id)}
+                                                                        />
+                                                                        <button
+                                                                            className="btn btn-primary btn-sm"
+                                                                            onClick={() => addItemToBox(box.id, subGroup.id)}
+                                                                            disabled={!newItemName.trim() || activeBoxId !== box.id || activeSubGroupId !== subGroup.id}
+                                                                        >
+                                                                            <Plus className="w-3 h-3" />
+                                                                        </button>
+                                                                    </div>
+                                                                    {activeBoxId === box.id && activeSubGroupId === subGroup.id && (
+                                                                        <div className="flex items-center gap-2">
+                                                                            <span className="text-xs text-gray-600">Quantity:</span>
+                                                                            <div className="flex items-center gap-1">
+                                                                                <button
+                                                                                    className="btn btn-outline btn-sm h-6 w-6 p-0"
+                                                                                    onClick={() => setNewItemQuantity(Math.max(1, newItemQuantity - 1))}
+                                                                                >
+                                                                                    <Minus className="w-2 h-2" />
+                                                                                </button>
+                                                                                <input
+                                                                                    className="input w-12 h-6 text-center text-xs"
+                                                                                    type="number"
+                                                                                    min="1"
+                                                                                    value={newItemQuantity}
+                                                                                    onChange={(e) => setNewItemQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                                                                                />
+                                                                                <button
+                                                                                    className="btn btn-outline btn-sm h-6 w-6 p-0"
+                                                                                    onClick={() => setNewItemQuantity(newItemQuantity + 1)}
+                                                                                >
+                                                                                    <Plus className="w-2 h-2" />
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+
+                                                                {/* Sub-Group Items */}
+                                                                <div className="space-y-2 max-h-40 overflow-y-auto">
+                                                                    {subGroup.items.length === 0 ? (
+                                                                        <p className="text-gray-500 text-xs italic">No items in this group yet</p>
+                                                                    ) : (
+                                                                        subGroup.items.map((item) => renderItem(item, box.id, subGroup.id))
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+
+                                                {/* Add Item Directly to Box */}
+                                                <div className="space-y-2">
+                                                    <div className="flex gap-2">
+                                                        <input
+                                                            className="input flex-1"
+                                                            placeholder="Add item directly to box..."
+                                                            value={activeBoxId === box.id && !activeSubGroupId ? newItemName : ''}
+                                                            onChange={(e) => {
+                                                                setNewItemName(e.target.value);
+                                                                setActiveBoxId(box.id);
+                                                                setActiveSubGroupId(null);
+                                                            }}
+                                                            onKeyPress={(e) => e.key === 'Enter' && addItemToBox(box.id)}
+                                                        />
+                                                        <button
+                                                            className="btn btn-primary btn-sm"
+                                                            onClick={() => addItemToBox(box.id)}
+                                                            disabled={!newItemName.trim() || activeBoxId !== box.id || activeSubGroupId !== null}
+                                                        >
+                                                            <Plus className="w-4 h-4" />
+                                                        </button>
+                                                    </div>
+                                                    {activeBoxId === box.id && !activeSubGroupId && (
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="text-sm text-gray-600">Quantity:</span>
+                                                            <div className="flex items-center gap-1">
+                                                                <button
+                                                                    className="btn btn-outline btn-sm h-8 w-8 p-0"
+                                                                    onClick={() => setNewItemQuantity(Math.max(1, newItemQuantity - 1))}
+                                                                >
+                                                                    <Minus className="w-3 h-3" />
+                                                                </button>
+                                                                <input
+                                                                    className="input w-16 h-8 text-center"
+                                                                    type="number"
+                                                                    min="1"
+                                                                    value={newItemQuantity}
+                                                                    onChange={(e) => setNewItemQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                                                                />
+                                                                <button
+                                                                    className="btn btn-outline btn-sm h-8 w-8 p-0"
+                                                                    onClick={() => setNewItemQuantity(newItemQuantity + 1)}
+                                                                >
+                                                                    <Plus className="w-3 h-3" />
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+
+                                                {/* Items Directly in Box */}
+                                                {(box.items || []).length > 0 && (
+                                                    <div className="space-y-2">
+                                                        <h4 className="text-sm font-medium text-gray-700">Items in box:</h4>
+                                                        <div className="space-y-2 max-h-40 overflow-y-auto">
+                                                            {box.items.map((item) => renderItem(item, box.id))}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+
+                        {/* Keyboard Shortcuts Modal */}
+                        {showKeyboardShortcuts && (
+                            <div className="modal-overlay">
+                                <div className="card max-w-md w-full max-h-[80vh] overflow-y-auto modal-content">
+                                    <div className="card-header">
+                                        <h2 className="card-title">Keyboard Shortcuts</h2>
+                                    </div>
+                                    <div className="card-content space-y-3">
+                                        <div className="grid grid-cols-2 gap-2 text-sm">
+                                            <div><kbd className="bg-gray-200 px-2 py-1 rounded">Ctrl+N</kbd> New box</div>
+                                            <div><kbd className="bg-gray-200 px-2 py-1 rounded">Ctrl+F</kbd> Search</div>
+                                            <div><kbd className="bg-gray-200 px-2 py-1 rounded">Ctrl+S</kbd> Export CSV</div>
+                                            <div><kbd className="bg-gray-200 px-2 py-1 rounded">Escape</kbd> Clear search</div>
+                                            <div><kbd className="bg-gray-200 px-2 py-1 rounded">?</kbd> Show shortcuts</div>
+                                        </div>
+                                        <button 
+                                            onClick={() => setShowKeyboardShortcuts(false)}
+                                            className="btn btn-primary w-full"
+                                        >
+                                            Close
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
+
